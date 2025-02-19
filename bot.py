@@ -1,5 +1,6 @@
 import os
 import instaloader
+import yt_dlp
 from pyrogram import Client, filters
 
 # Bot Credentials
@@ -16,8 +17,19 @@ def download_instagram_reel(url):
     try:
         post = instaloader.Post.from_shortcode(loader.context, url.split("/")[-2])
         filename = f"{post.shortcode}.mp4"
-        os.system(f"yt-dlp {post.video_url} -o {filename}")
-        return filename
+
+        # yt-dlp से वीडियो डाउनलोड करें
+        ydl_opts = {
+            'outtmpl': filename,
+            'quiet': True,
+            'noplaylist': True,
+            'merge_output_format': 'mp4'
+        }
+        
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            ydl.download([post.video_url])
+
+        return filename if os.path.exists(filename) else None
     except Exception as e:
         return None
 
