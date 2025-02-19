@@ -1,8 +1,7 @@
 import os
 import requests
-import insta loafer
-from pyrogram
-import Client, filters
+import instaloader
+from pyrogram import Client, filters
 
 Bot Credentials
 
